@@ -1,5 +1,5 @@
 // Тоглогчийн ээлжийг хадгалах хувьсагч
-var activePlayer = 1;
+var activePlayer = 0;
 // Тоглогчдын цуглуулсан оноог хадгалах хувьсагч
 var scores = [0, 0];
 // Тоглогчийн ээлжиндээ цуглуулж байгаа оноог хадгалах хувьсагч
@@ -14,9 +14,29 @@ document.getElementById("current-1").textContent = "0";
 
 var diceDom = document.querySelector(".dice");
 diceDom.style.display = "none";
-
+// Шоог шидэх эвэнт лист
 document.querySelector(".btn-roll").addEventListener("click", function() {
+  // 1-6 доторх санамсаргүй нэг тоог гаргаж авна
   var diceNumber = Math.floor(Math.random() * 6) + 1;
+  // Шооны үургийг вэб дээр гаргаж ирнэ
   diceDom.style.display = "block";
+  // Буусан санамсаргүй тоонд харгалзах шооны зургийг вэб дээр гаргаж ирнэ
   diceDom.src = "dice-" + diceNumber + ".png";
+  //Буусан тоо нь 1-с ялгаатай бол идэвхитэй тоглогчийн ээлжийн оноог шилжүүлнэ.
+  if (diceNumber !== 1) {
+    roundScore = roundScore + diceNumber;
+    document.getElementById("current-" + activePlayer).textContent = roundScore;
+  } else {
+    document.getElementById("current-" + activePlayer).textContent = 0;
+    if (activePlayer === 0) {
+      activePlayer = 1;
+    } else {
+      activePlayer = 0;
+    }
+    document.querySelector(".player-0-panel").classList.toggle("active");
+    document.querySelector(".player-1-panel").classList.toggle("active");
+
+    // Шоог түр алга болгоно
+    diceDom.style.display = "none";
+  }
 });
